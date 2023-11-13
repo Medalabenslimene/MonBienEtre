@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gestion des Animaux - Vétérinaire</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <h1>Gestion des Animaux</h1>
+    
+    <!-- Formulaire pour créer un nouvel animal -->
+    <form id="animalForm">
+        <input type="text" id="species" placeholder="Espèce">
+        <input type="text" id="description" placeholder="Description">
+        <button onclick="createAnimal()">Ajouter</button>
+    </form>
+    
+    <!-- Liste des animaux existants -->
+    <ul id="animalList"></ul>
+
+    <script src="script.js"></script>
+</body>
+</html>

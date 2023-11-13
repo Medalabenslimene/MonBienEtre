@@ -1,0 +1,37 @@
+/* styles.css */
+
+/* Styles pour la mise en page de base */
+/* Styles pour la messagerie entre vétérinaire et patient */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+input {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+button {
+    padding: 5px 10px;
+    margin-left: 10px;
+}
+
+#messageArea {
+    border: 1px solid #ccc;
+    height: 200px;
+    padding: 10px;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+}

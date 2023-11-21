@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Language" content="fr">
+    <title>Pseudo</title>
+
+    <!-- Lien vers le fichier CSS -->
+    <link rel="stylesheet" type="text/css" href="reclamation.css">
+
+</head>
+
+<body>
+    <script src="reclamation.js"></script>
+
+    <form method="POST" action="" onsubmit="return verif1()" name="F">
+        <p>
+            Pseudo: <input type="text" name="pseudo" size="20" placeholder="votre pseudo ! ">
+        </p>
+        <p>
+            CIN: <input type="text" name="cin" size="20" placeholder="ENTREZ VOTRE CIN (CARTE IDENTITÉ)">
+        </p>
+        <p>
+            <select size="1" name="D1">
+                <option selected>Type de réclamation</option>
+                <option>bug</option>
+                <option>Choix 3</option>
+            </select>
+        </p>
+        <p>
+            Déposer un fichier:&nbsp;&nbsp; <input type="file" name="fileUpload">
+        </p>
+        <p>
+            Ajouter un commentaire: <textarea rows="2" name="S1" cols="18" placeholder="EXPLIQUEZ TA RECLAMATION"></textarea>
+        </p> 
+        
+        <p>
+
+            <input type="submit" value="Envoyer" name="B1">&nbsp;&nbsp;
+            <input type="reset" value="Supprimer" name="B2">&nbsp;&nbsp;&nbsp;
+            <button type="button" name="B3">Consulter les réclamations</button>
+        </p>
+    </form>
+
+</body>
+
+</html>

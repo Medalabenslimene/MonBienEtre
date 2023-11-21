@@ -1,0 +1,107 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+form {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+p {
+    margin-bottom: 15px;
+}
+
+input[type="text"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    box-sizing: border-box;
+    border: 1px solid #3b3434;
+    border-radius: 4px;
+}
+
+select {
+    cursor: pointer;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input[type="submit"],
+input[type="reset"],
+button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+button:hover {
+    background-color: #45a049;
+}
+
+button {
+    padding: 8px 12px;
+}
+
+/* Ajoutez la règle suivante pour aligner les boutons horizontalement */
+form button {
+    margin-right: 10px; /* Ajustez la marge selon vos préférences */
+    display: inline-block;
+
+}
+
+
+/* Ajoutez ces règles pour ajuster les propriétés des zones de texte <input> */
+input[type="text"],
+textarea,
+select {
+    border: 2px solid #5d9c40; /* Couleur de la bordure par défaut */
+}
+
+input[type="text"]:hover,
+textarea:hover,
+select:hover {
+    border: 2px solid #5d9c40; /* Couleur de la bordure au survol */
+}
+
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+    border: 2px solid #5d9c40; /* Couleur de la bordure lorsqu'elles sont en focus */
+}
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    box-sizing: border-box;
+    border: 1px solid #5d9c40;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="file"]:hover {
+    border: 1px solid #5d9c40; /* Couleur de la bordure au survol */
+}
+
+input[type="file"]:focus {
+    border: 1px solid #5d9c40; /* Couleur de la bordure lorsqu'il est en focus */
+}
+
+
+
+
+
+

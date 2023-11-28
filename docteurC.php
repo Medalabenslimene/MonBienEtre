@@ -2,11 +2,11 @@
 
 require '../../config.php';
 
-class patientC
+class docteurC
 {
-    public function listPatient()
+    public function listDocteur()
     {
-        $sql = "SELECT * FROM `patient`";
+        $sql = "SELECT * FROM `docteur`";
         $db = config::getConnexion();
         try {
             $liste = $db->query($sql);
@@ -16,9 +16,9 @@ class patientC
         }
     }
 
-    function deletePatient($id)
+    function deleteDocteur($id)
     {
-        $sql = "DELETE FROM `patient` WHERE id_patient = :id";
+        $sql = "DELETE FROM `docteur` WHERE id_docteur = :id";
         $db = config::getConnexion();
         $req = $db->prepare($sql);
         $req->bindValue(':id', $id);
@@ -30,17 +30,17 @@ class patientC
         }
     }
 
-    function addPatient(Patient $patient)
+    function addDocteur(Docteur $docteur)
     {
-        $sql = "INSERT INTO `patient`  
+        $sql = "INSERT INTO `docteur`  
         VALUES (
             NULL, 
             :nom,
             :prenom,
             :telephone,
             :email,
-            :genre,
-            :heure_rdv
+            :specialite,
+            :heure_depart
         )";
         $db = config::getConnexion();
         try {
@@ -48,55 +48,55 @@ class patientC
             $query = $db->prepare($sql);
             
             $query->execute([
-                'nom' => $patient->getNom(),
-                'prenom' => $patient->getPrenom(),
-                'telephone' => $patient->getTelephone(),
-                'email' => $patient->getEmail(),
-                'genre' => $patient->getgenre(),
-                'heure_rdv' => $patient->getHeure_rdv(),
+                'nom' => $docteur->getNom(),
+                'prenom' => $docteur->getPrenom(),
+                'telephone' => $docteur->getTelephone(),
+                'email' => $docteur->getEmail(),
+                'specialite' => $docteur->getspecialite(),
+                'heure_depart' => $docteur->getHeure_depart(),
             ]);
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
         }
     }
 
-    function showPatient($id)
+    function showDocteur($id)
     {
-        $sql = "SELECT * FROM `patient` WHERE id_patient = $id";
+        $sql = "SELECT * FROM `docteur` WHERE id_docteur = $id";
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
             $query->execute();
-            $patient = $query->fetch();
-            return $patient;
+            $docteur = $query->fetch();
+            return $docteur;
         } catch (Exception $e) {
             die('Error: ' . $e->getMessage());
         }
     }
 
-    function updatePatient($patient, $id)
+    function updateDocteur($docteur, $id)
     {
         try {
             $db = config::getConnexion();
             $query = $db->prepare(
-                'UPDATE `patient` SET 
+                'UPDATE `docteur` SET 
                     nom = :nom, 
                     prenom = :prenom, 
                     telephone = :telephone, 
                     email = :email, 
-                    genre = :genre, 
-                    heure_rdv = :heure_rdv
-                WHERE id_patient = :id_patient'
+                    specialite = :specialite, 
+                    heure_depart = :heure_depart
+                WHERE id_docteur = :id_docteur'
             );
 
             $query->execute([
-                'id_patient' => $id,
-                'nom' => $patient->getNom(),
-                'prenom' => $patient->getPrenom(),
-                'telephone' => $patient->getTelephone(),
-                'email' => $patient->getemail(),
-                'genre' => $patient->getgenre(),
-                'heure_rdv' => $patient->getHeure_rdv(),
+                'id_docteur' => $id,
+                'nom' => $docteur->getNom(),
+                'prenom' => $docteur->getPrenom(),
+                'telephone' => $docteur->getTelephone(),
+                'email' => $docteur->getemail(),
+                'specialite' => $docteur->getspecialite(),
+                'heure_depart' => $docteur->getHeure_depart(),
             ]);
 
             echo $query->rowCount() . " records UPDATED successfully <br>";

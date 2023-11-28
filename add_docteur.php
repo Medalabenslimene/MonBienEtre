@@ -1,110 +1,128 @@
 <?php
 
-include('../../controlleur/doctorC.php');
+include('../../controlleur/docteurC.php');
 include('../../modele/docteur.php');
 
-// Create doctor
-$doctor = null;
+// create docteur
+$docteur = null;
 
-// Create an instance of the controller
-$doctorC = new DoctorC();
+// create an instance of the controller
+$docteurC = new DocteurC();
 
 if (
     isset($_POST["nom"]) &&
     isset($_POST["prenom"]) &&
     isset($_POST["telephone"]) &&
-    isset($_POST["adresse"]) &&
     isset($_POST["email"]) &&
-    isset($_POST["password"]) &&
-    isset($_POST["specialite"])
+    isset($_POST["specialite"]) &&
+    isset($_POST["heure_depart"])
 ) {
     if (
         !empty($_POST["nom"]) &&
         !empty($_POST["prenom"]) &&
-        preg_match("/^[a-zA-Z ]*$/", $_POST["nom"]) &&  // Vérifie si le nom contient uniquement des lettres et des espaces
-        preg_match("/^[a-zA-Z ]*$/", $_POST["prenom"]) &&  // Vérifie si le prénom contient uniquement des lettres et des espaces
         !empty($_POST["telephone"]) &&
-        !empty($_POST["adresse"]) &&
         !empty($_POST["email"]) &&
-        !empty($_POST["password"]) &&
-        !empty($_POST["specialite"])
+        !empty($_POST["specialite"]) &&
+        !empty($_POST["heure_depart"])
     ) {
-        $doctor = new Doctor();
-        $doctor->setValues(
+        echo 'start saving';
+        $docteur = new Docteur();
+        $docteur->setValues(
             $_POST["nom"],
             $_POST["prenom"],
             $_POST["telephone"],
-            $_POST["adresse"],
             $_POST["email"],
-            $_POST["password"],
-            $_POST["specialite"]
+            $_POST["specialite"],
+            $_POST["heure_depart"]
         );
-
-        $doctorC->addDoctor($doctor);
+        /*print_r($docteur);
+        return;*/
+        $docteurC->addDocteur($docteur);
         header('Location: liste_docteur.php');
     } else {
-        // Afficher un message d'erreur si les champs "nom" ou "prenom" sont vides ou invalides
-        echo 'Erreur : Veuillez saisir un nom et un prénom valides.';
+        // Display an error message if fields are empty
+        echo 'Erreur : Veuillez remplir tous les champs.';
     }
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <link rel="stylesheet" href="bootstrap.min.css" />
     <link rel="stylesheet" href="style2.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <title>Formulaire d'inscription du docteur</title>
+    
+    <title>Ajout un docteur</title>
+
 </head>
+
 <body>
+<style>
+        body {
+            /* Set your background image and size */
+            background-image: url('docteur1.jpg');
+            background-size: cover;
+            background-position: center;
+
+            /* For modern browsers */
+            background-color: rgba(255, 255, 255, 0.5);
+            /* For older browsers */
+            filter: alpha(opacity=50);
+            /* Set your background image and size */
+        background-image: url('docteur1.jpg');
+        background-size: cover;
+        background-position: center;
+        /* For modern browsers */
+        background-color: rgba(255, 255, 255, 0.5);
+        /* For older browsers */
+        filter: alpha(opacity=50);
+    }
+
+</style>
     <div class="container">
-        <header class="text-center mt-4 mb-4">Inscription du docteur</header>
-        <form action="" method="POST">
-            <div class="form">
-                <div class="details personal">
-                    <span class="title">Détails du docteur</span>
-                    <div class="fields">
-                        <!-- Add your form fields for doctor attributes -->
-                        <div class="input-field">
-                            <label><i class="uil uil-user"></i> Nom du docteur</label>
-                            <input class="form-control" type="text" name="nom" placeholder="Entrez le nom du docteur" required>
-                        </div>
-                        <div class="input-field">
-                            <label><i class="uil uil-user"></i> Prénom du docteur</label>
-                            <input class="form-control" type="text" name="prenom" placeholder="Entrez le prénom du docteur" required>
-                        </div>
-                        <div class="input-field">
-                            <label><i class="uil uil-phone"></i> Téléphone</label>
-                            <input class="form-control" type="tel" name="telephone" placeholder="Entrez le numéro de téléphone" required>
-                        </div>
-                        <div class="input-field">
-                            <label><i class="uil uil-home"></i> Adresse</label>
-                            <input class="form-control" type="text" name="adresse" placeholder="Entrez l'adresse" required>
-                        </div>
-                        <div class="input-field">
-                            <label><i class="uil uil-envelope"></i> Email</label>
-                            <input type="email" name="email" placeholder="Entrer votre Email" required>
-                        </div>
-                        <div class="input-field">
-                            <label><i class="uil uil-key-skeleton"></i> Mot de passe</label>
-                            <input type="password" name="password" placeholder="Entrer votre Mot de passe" required>
-                        </div>
-                        <div class="input-field">
-                            <label><i class="uil uil-medkit"></i> Spécialité</label>
-                            <input class="form-control" type="text" name="specialite" placeholder="Entrez la spécialité" required>
-                        </div>
-                        <!-- Add more fields as needed -->
-                        <div class="submit-button">
-                            <button class="btn btn-primary w-100 py-3" type="submit">S'inscrire</button>
-                        </div>
+        <header class="text-center mt-4 mb-4">Ajout de docteur</header>
+        <form action="" method="POST" onsubmit="return validateForm()">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Détails du docteur</h5>
+                    <div class="form-group">
+                        <label for="nom"><i class="uil uil-user"></i> Nom</label>
+                        <input class="form-control" type="text" id="nom" name="nom" placeholder="Entrez le nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prenom"><i class="uil uil-user"></i> Prenom</label>
+                        <input class="form-control" type="text" id="prenom" name="prenom" placeholder="Entrez le prenom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telephone"><i class="uil uil-phone"></i> Telephone</label>
+                        <input class="form-control" type="tel" id="telephone" name="telephone" placeholder="Entrez le telephone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email"><i class="uil uil-hospital"></i> Email</label>
+                        <input class="form-control" type="text" id="email" name="email" placeholder="Entrez le email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="specialite"><i class="uil uil-calendar"></i> specialite</label>
+                        <input class="form-control" type="text" id="specialite" name="specialite" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="heure_depart"><i class="uil uil-clock"></i> Heure_depart</label>
+                        <input class="form-control" type="time" id="heure_depart" name="heure_depart" required>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" type="submit">Ajouter le docteur</button>
                     </div>
                 </div>
             </div>
         </form>
     </div>
+    <script src="docteur.js"></script>
 </body>
+
 </html>

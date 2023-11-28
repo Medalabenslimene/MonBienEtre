@@ -1,128 +1,113 @@
+<?php
+include "../../controlleur/patientC.php";
+
+$c = new PatientC();
+$tab = $c->listPatient();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style_liste.css"> <!-- Link to your CSS file -->
-    <title>Liste des Patients</title>
-</head>
-<body>
-    <?php
-    include "../../controlleur/patientC.php"; // Assuming you have a PatientC class
-    $patientC = new PatientC();
-    $patients = $patientC->listPatients();
-    ?>
-
-    <h2>Liste des Patients</h2>
+    <link rel="stylesheet" href="bootstrap.min.css" />
+    <link rel="stylesheet" href="style2.css" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Liste des patients</title> 
     
+</head>
 <style>
-  table {
-    border-collapse: collapse;
-    width: 100%;
-  }
+        body {
+            /* Set your background image and size */
+            background-image: url('docteur1.jpg');
+            background-size: cover;
+            background-position: center;
 
-  th {
-    font-weight: bold;
-    color: darkblue;
-  }
+            /* For modern browsers */
+            background-color: rgba(255, 255, 255, 0.5);
+            /* For older browsers */
+            filter: alpha(opacity=50);
+            /* Set your background image and size */
+        background-image: url('docteur1.jpg');
+        background-size: cover;
+        background-position: center;
+        /* For modern browsers */
+        background-color: rgba(255, 255, 255, 0.5);
+        /* For older browsers */
+        filter: alpha(opacity=50);
+    }
+    .container {
+    background-color: white;
+    border-radius: 40px;
+    height: 500px; /* Hauteur du carré */
+    padding: 20px; /* Ajuster le padding selon la taille du carré */
+    box-shadow: 01px 1px rgba(1, 1, 0.1, 0.1);
+}
 
-  th:nth-child(8) {
-    color: darkblue;
-  }
+.custom-table { 
 
-  th:nth-child(9) {
-    color: red;
-  }
+    width: 50%;
+    margin-top: 40px;
+    margin-right: 75px; 
+    margin-right: 100px; /* Marge à droite du tableau */
+}
+
+.custom-link {
+    color: #fff;
+}
+
 </style>
+<body>
+    <div class="container mt-5 center-content">
+        <h1 class="text-center">Liste des patients</h1>
+        <h2 class="text-center">
+            <a href="add_patient.php" class="btn btn-primary">New patient</a>
+        </h2>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Âge</th>
-                <th> genre</th>
-                <th>Email</th>
-                <th>Mot de passe</th>
-                <th>Téléphone</th>
-                <th>Update</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($patients as $patient): ?>
+        <table class="table custom-table">
+            <thead class="thead-dark">
                 <tr>
-                    <td><?php echo $patient['nom']; ?></td>
-                    <td><?php echo $patient['prenom']; ?></td>
-                    <td><?php echo $patient['age']; ?></td>
-                    <td><?php echo $patient['genre']; ?></td>
-                    <td><?php echo $patient['email']; ?></td>
-                    <td><?php echo $patient['password']; ?></td>
-                    <td><?php echo $patient['telephone']; ?></td>
-                    <td>
-                        <a href="update_patient.php?id_patient=<?php echo $patient['id_patient']; ?>">Update</a>
-                    </td>
-                    <td>
-                        <a href="delete_patient.php?id_patient=<?php echo $patient['id_patient']; ?>">Delete</a>
-                    </td>
+                    <th>Id_patient</th>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Telephone</th>
+                    <th>Email</th>
+                    <th>genre</th>
+                    <th>Heure_rdv</th>
+                    <th>Update</th>
+                    <th>Delete</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table> 
+            </thead>
 
+            <tbody>
+                <?php foreach ($tab as $patient) : ?>
+                    <tr>
+                        <td><?= $patient['id_patient']; ?></td>
+                        <td><?= $patient['nom']; ?></td>
+                        <td><?= $patient['prenom']; ?></td>
+                        <td><?= $patient['telephone']; ?></td>
+                        <td><?= $patient['email']; ?></td>
+                        <td><?= $patient['genre']; ?></td>
+                        <td><?= $patient['heure_rdv']; ?></td>
+                        <td>
+                            <a href="update_patient.php?id_patient=<?= $patient['id_patient']; ?>"
+                                class="btn btn-primary custom-link">Update</a>
+                        </td>
+                        <td>
+                            <a href="delete_patient.php?id_patient=<?= $patient['id_patient']; ?>"
+                                class="btn btn-primary custom-link">Delete</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 
-    <script>
-  function validateForm() {
-    var ageInput = document.getElementById("age");
-    var genreInput = document.getElementById("genre");
-    var emailInput = document.getElementById("email");
-    var passwordInput = document.getElementById("password");
-    var telephoneInput = document.getElementById("telephone");
-
-    var age = ageInput.value.trim();
-    var genre = genreInput.value.trim();
-    var email = emailInput.value.trim();
-    var password = passwordInput.value.trim();
-    var telephone = telephoneInput.value.trim();
-
-    var ageRegex = /^\d{1,4}$/; // Numérique et jusqu'à 4 chiffres
-    var genreOptions = ['femme', 'homme', 'animal', 'autre'];
-    var passwordLength = password.length <= 10;
-    var phoneRegex = /^\d{1,11}$/; // Numérique et jusqu'à 11 chiffres
-
-    if (!ageRegex.test(age)) {
-      alert("L'âge doit être numérique et ne pas dépasser 4 chiffres !");
-      return false;
-    }
-
-    if (!genreOptions.includes(genre)) {
-      alert("Veuillez choisir un genre parmi les options disponibles !");
-      return false;
-    }
-
-    if (!email.includes("@")) {
-      alert("Veuillez saisir une adresse e-mail valide !");
-      return false;
-    }
-
-    if (!passwordLength) {
-      alert("Le mot de passe ne doit pas dépasser 10 caractères !");
-      return false;
-    }
-
-    if (!phoneRegex.test(telephone)) {
-      alert("Le numéro de téléphone doit être numérique et ne pas dépasser 11 chiffres !");
-      return false;
-    }
-
-    return true;
-  }
-</script>
-
-
-
-
-
-
+    <!-- Include Bootstrap scripts (jQuery and Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

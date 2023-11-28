@@ -2,32 +2,30 @@
 
 include_once "../../config.php";
 
-class Doctor {
-    // Attributs
+class Docteur {
+    // Attributes
     private $id_docteur;
     private $nom;
     private $prenom;
     private $telephone;
-    private $adresse;
     private $email;
-    private $password;
     private $specialite;
+    private $heure_depart;
 
-    // Constructeur sans paramètres
+    // Constructor without parameters
     public function __construct() {}
 
-    // Méthode pour définir les valeurs des attributs
-    public function setValues($nom, $prenom, $telephone, $adresse, $email, $password, $specialite) {
+    // Method to set attribute values
+    public function setValues($nom, $prenom, $telephone, $email, $specialite, $heure_depart) {
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->telephone = $telephone;
-        $this->adresse = $adresse;
         $this->email = $email;
-        $this->password = $password;
         $this->specialite = $specialite;
+        $this->heure_depart = $heure_depart;
     }
 
-    // Getter et setter pour chaque attribut
+    // Getters and setters for each attribute
 
     public function getIdDocteur() {
         return $this->id_docteur;
@@ -57,14 +55,6 @@ class Doctor {
         $this->telephone = $telephone;
     }
 
-    public function getAdresse() {
-        return $this->adresse;
-    }
-
-    public function setAdresse($adresse) {
-        $this->adresse = $adresse;
-    }
-
     public function getEmail() {
         return $this->email;
     }
@@ -73,64 +63,53 @@ class Doctor {
         $this->email = $email;
     }
 
-    public function getPassword() {
-        return $this->password;
-    }
-
-    public function setPassword($password) {
-        $this->password = $this->hashPassword($password);
-    }
-
-    public function getSpecialite() {
+    public function getspecialite() {
         return $this->specialite;
     }
 
-    public function setSpecialite($specialite) {
+    public function setspecialite($specialite) {
         $this->specialite = $specialite;
     }
 
-    // Méthode pour hacher le mot de passe
-    private function hashPassword($password) {
-        return password_hash($password, PASSWORD_DEFAULT);
+    public function getHeure_depart() {
+        return $this->heure_depart;
     }
 
-    // Méthode pour vérifier un mot de passe haché
-    public function verifyPassword($password) {
-        return password_verify($password, $this->password);
+    public function setHeure_depart($heure_depart) {
+        $this->heure_depart = $heure_depart;
     }
 
+    // Method to save the docteur in the database
     public function save() {
         try {
             $db = $GLOBALS['db'];
 
-            // Préparer la requête SQL
-            $query = "INSERT INTO doctors (nom, prenom, telephone, adresse, email, password, specialite) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            // Prepare the SQL query
+            $query = "INSERT INTO docteur (nom, prenom, telephone, email, specialite, heure_depart) VALUES (?, ?, ?, ?, ?, ?)";
 
-            // Préparer la déclaration SQL
+            // Prepare the SQL statement
             $statement = $db->prepare($query);
 
-            // Lier les valeurs
+            // Bind values
             $statement->bindParam(1, $this->nom);
             $statement->bindParam(2, $this->prenom);
             $statement->bindParam(3, $this->telephone);
-            $statement->bindParam(4, $this->adresse);
-            $statement->bindParam(5, $this->email);
-            $statement->bindParam(6, $this->password);
-            $statement->bindParam(7, $this->specialite);
+            $statement->bindParam(4, $this->email);
+            $statement->bindParam(5, $this->specialite);
+            $statement->bindParam(6, $this->heure_depart);
 
-            // Exécuter la requête
+            // Execute the query
             $result = $statement->execute();
 
-            // Fermer la connexion à la base de données
+            // Close the database connection
             $db = null;
 
             return $result;
         } catch (PDOException $e) {
-            // Gérer les erreurs de base de données
-            echo "Erreur de base de données : " . $e->getMessage();
+            // Handle database errors
+            echo "Database error: " . $e->getMessage();
             return false;
         }
     }
 }
-
 ?>

@@ -1,11 +1,7 @@
 <?php
-
-class config
-{
+class config{
     private static $pdo = null;
-
-    public static function getConnexion()
-    {
+    public static function getConnexion(){
         if (!isset(self::$pdo)) {
             try {
                 self::$pdo = new PDO(
@@ -17,20 +13,11 @@ class config
                         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
                     ]
                 );
-                //echo "connected successfully";
             } catch (Exception $e) {
                 die('Erreur: ' . $e->getMessage());
             }
         }
         return self::$pdo;
     }
-}
-
-
-
-
-
-
-
-
-config::getConnexion();
+}config::getConnexion();
+?>

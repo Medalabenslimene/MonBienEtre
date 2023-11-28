@@ -1,125 +1,113 @@
+<?php
+include "../../controlleur/docteurC.php";
+
+$c = new DocteurC();
+$tab = $c->listDocteur();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style_liste.css"> <!-- Link to your CSS file -->
-    <title>Liste des Docteurs</title>
-</head>
-<body>
-    <?php
-    include "../../controlleur/doctorC.php"; // Assuming you have a DoctorC class
-    $doctorC = new DoctorC();
-    $doctors = $doctorC->listDoctors();
-    ?>
-
-    <h2>Liste des Docteurs</h2>
-   // css 
-<style>
-  table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-
-  th {
-    font-weight: bold;
-    color: darkblue;
-  }
-
-  th:nth-child(8) {
-    color: darkblue;
-  }
-
-  th:nth-child(9) {
-    color: red;
-  }
-</style>
- 
-    <table>
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Téléphone</th>
-                <th>Adresse</th>
-                <th>Email</th>
-                <th>Mot de passe</th>
-                <th><select id="specialite" name="specialite" required>
-      <option value="">Sélectionner une spécialité</option>
-      <option value="dentiste">dentiste</option>
-      <option value="médecin généraliste">médecin généraliste</option>
-      <option value="pédiatre">pédiatre</option></select><br><br></th>
-                <th>Update</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($doctors as $doctor): ?>
-                <tr>
-                    <td><?php echo $doctor['nom']; ?></td>
-                    <td><?php echo $doctor['prenom']; ?></td>
-                    <td><?php echo $doctor['telephone']; ?></td>
-                    <td><?php echo $doctor['adresse']; ?></td>
-                    <td><?php echo $doctor['email']; ?></td>
-                    <td><?php echo $doctor['password']; ?></td>
-                    <td><?php echo $doctor['specialite']; ?></td>
-                    <td>
-                        <a href="update_docteur.php?id_docteur=<?php echo $doctor['id_docteur']; ?>">Update</a>
-                    </td>
-                    <td>
-                        <a href="delete_docteur.php?id_docteur=<?php echo $doctor['id_docteur']; ?>">Delete</a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table> 
+    <link rel="stylesheet" href="bootstrap.min.css" />
+    <link rel="stylesheet" href="style2.css" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Liste des docteur</title> 
     
-<script>
-  function validateForm() {
-    var telephoneInput = document.getElementById("telephone");
-    var adresseInput = document.getElementById("adresse");
-    var emailInput = document.getElementById("email");
-    var passwordInput = document.getElementById("password");
-    var specialiteInput = document.getElementById("specialite");
+</head>
+<style>
+        body {
+            /* Set your background image and size */
+            background-image: url('docteur1.jpg');
+            background-size: cover;
+            background-position: center;
 
-    var telephone = telephoneInput.value.trim();
-    var adresse = adresseInput.value.trim();
-    var email = emailInput.value.trim();
-    var password = passwordInput.value.trim();
-    var specialite = specialiteInput.value.trim();
-
-    var phoneRegex = /^\d{1,11}$/; // Numérique et jusqu'à 11 chiffres
-    var addressRegex = /^[A-Za-z0-9\s]+$/; // Chaine de caractères et numériques
-    var emailRegex = /@/; // Vérification basique d'email (contient @)
-    var passwordLength = password.length <= 10;
-
-    if (!phoneRegex.test(telephone)) {
-      alert("Le numéro de téléphone doit être numérique et ne pas dépasser 11 chiffres !");
-      return false;
+            /* For modern browsers */
+            background-color: rgba(255, 255, 255, 0.5);
+            /* For older browsers */
+            filter: alpha(opacity=50);
+            /* Set your background image and size */
+        background-image: url('docteur1.jpg');
+        background-size: cover;
+        background-position: center;
+        /* For modern browsers */
+        background-color: rgba(255, 255, 255, 0.5);
+        /* For older browsers */
+        filter: alpha(opacity=50);
     }
+    .container {
+    background-color: white;
+    border-radius: 40px;
+    height: 500px; /* Hauteur du carré */
+    padding: 20px; /* Ajuster le padding selon la taille du carré */
+    box-shadow: 01px 1px rgba(1, 1, 0.1, 0.1);
+}
 
-    if (!addressRegex.test(adresse)) {
-      alert("L'adresse doit être une combinaison de caractères et de chiffres !");
-      return false;
-    }
+.custom-table { 
 
-    if (!emailRegex.test(email)) {
-      alert("Veuillez saisir une adresse e-mail valide !");
-      return false;
-    }
+    width: 50%;
+    margin-top: 40px;
+    margin-right: 75px; 
+    margin-right: 100px; /* Marge à droite du tableau */
+}
 
-    if (!passwordLength) {
-      alert("Le mot de passe ne doit pas dépasser 10 caractères !");
-      return false;
-    }
+.custom-link {
+    color: #fff;
+}
 
-    if (specialite === "") {
-      alert("Veuillez choisir une spécialité !");
-      return false;
-    }
+</style>
+<body>
+    <div class="container mt-5 center-content">
+        <h1 class="text-center">Liste des docteurs</h1>
+        <h2 class="text-center">
+            <a href="add_docteur.php" class="btn btn-primary">New docteur</a>
+        </h2>
 
-    return true;
-  }
-</script> 
+        <table class="table custom-table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Id docteur</th>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Telephone</th>
+                    <th>Email</th>
+                    <th>specialite</th>
+                    <th>Heure_depart</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <?php foreach ($tab as $docteur) : ?>
+                    <tr>
+                        <td><?= $docteur['id_docteur']; ?></td>
+                        <td><?= $docteur['nom']; ?></td>
+                        <td><?= $docteur['prenom']; ?></td>
+                        <td><?= $docteur['telephone']; ?></td>
+                        <td><?= $docteur['email']; ?></td>
+                        <td><?= $docteur['specialite']; ?></td>
+                        <td><?= $docteur['heure_depart']; ?></td>
+                        <td>
+                            <a href="update_docteur.php?id_docteur=<?= $docteur['id_docteur']; ?>"
+                                class="btn btn-primary custom-link">Update</a>
+                        </td>
+                        <td>
+                            <a href="delete_docteur.php?id_docteur=<?= $docteur['id_docteur']; ?>"
+                                class="btn btn-primary custom-link">Delete</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Include Bootstrap scripts (jQuery and Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

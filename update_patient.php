@@ -1,126 +1,150 @@
 <?php
-
-include '../../controlleur/PatientC.php';
+include '../../controlleur/patientC.php';
 include '../../modele/patient.php';
 
-// Create patient
+// Create a patient
 $patient = null;
 
 // Create an instance of the controller
-$patientC = new PatientC();
+$patientC = new patientC();
 
-if (
-    isset($_POST["nom"]) &&
-    isset($_POST["prenom"]) &&
-    isset($_POST["age"]) &&
-    isset($_POST["genre"]) &&
-    isset($_POST["email"]) &&
-    isset($_POST["password"]) &&
-    isset($_POST["telephone"])
-) {
+// Check if the form has been submitted
+if (isset($_POST["submit"])) {
+    // Check for the presence of required fields
     if (
-        !empty($_POST['nom']) &&
-        !empty($_POST["prenom"]) &&
-        !empty($_POST["age"]) &&
-        !empty($_POST["genre"]) &&
-        !empty($_POST["email"]) &&
-        !empty($_POST["password"]) &&
-        !empty($_POST["telephone"])
+        isset($_POST["nom"]) &&
+        isset($_POST["prenom"]) &&
+        isset($_POST["telephone"]) &&
+        isset($_POST["email"]) &&
+        isset($_POST["genre"]) &&
+        isset($_POST["heure_rdv"])
     ) {
-        // Use the correct parameter names when creating the Patient object
-        $patient = new Patient();
-        $patient->setValues(
-            $_POST['nom'],
-            $_POST['prenom'],
-            $_POST['age'],
-            $_POST['genre'],
-            $_POST['email'],
-            $_POST['password'],
-            $_POST['telephone']
-        );
+        // Check that required fields are not empty
+        if (
+            !empty($_POST["nom"]) &&
+            !empty($_POST["prenom"]) &&
+            !empty($_POST["telephone"]) &&
+            !empty($_POST["email"]) &&
+            !empty($_POST["genre"]) &&
+            !empty($_POST["heure_rdv"])
+        ) {
+            // Use the correct parameter names when creating the patient object
+            $patient = new patient();
+            $patient->setValues(
+                $_POST["nom"],
+                $_POST["prenom"],
+                $_POST["telephone"],
+                $_POST["email"],
+                $_POST["genre"],
+                $_POST["heure_rdv"]
+            );
 
-        // Update should use $_GET['id_patient'] instead of $_GET['id']
-        $patientC->updatePatient($patient, $_GET['id_patient']);
+            // Update the patient in the database
+            $patientC->updatepatient($patient, $_POST['id_patient']);
 
-        header('Location: liste_patient.php');
+            // Redirect to the list of patient after the update
+            header('Location: liste_patient.php');
+        }
     }
 }
 
+// Retrieve patient data from the database
+if (isset($_GET['id_patient'])) {
+    $oldPatient = $patientC->showPatient($_GET['id_patient']);
+} else {
+    // Handle the case where the patient ID is not specified
+    echo "ID du patient non spécifié.";
+    exit;
+}
 ?>
 
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Patient Information</title>
+    <title>Update Patient</title>
+
+    <!-- Add links to Bootstrap CSS files -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <body>
-    <button><a href="liste_patient.php">Back to list</a></button>
-    <hr>
+<style>
+        body {
+            /* Set your background image and size */
+            background-image: url('docteur1.jpg');
+            background-size: cover;
+            background-position: center;
 
-    <?php
-    if (isset($_GET['id_patient'])) {
-        $oldPatient = $patientC->showPatient($_GET['id_patient']);
-    ?>
-
-        <form action="" method="POST">
-            
-            <table>
-                <tr>
-                    <td><label for="nom">Nom :</label></td>
-                    <td>
-                        <input type="text" id="nom" name="nom" value="<?php echo $oldPatient['nom'] ?>" />
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="prenom">Prenom :</label></td>
-                    <td>
-                        <input type="text" id="prenom" name="prenom" value="<?php echo $oldPatient['prenom'] ?>" />
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="age">Age :</label></td>
-                    <td>
-                        <input type="text" id="age" name="age" value="<?php echo $oldPatient['age'] ?>" />
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="genre">Genre :</label></td>
-                    <td>
-                        <input type="text" id="genre" name="genre" value="<?php echo $oldPatient['genre'] ?>" />
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="email">Email :</label></td>
-                    <td>
-                        <input type="text" id="email" name="email" value="<?php echo $oldPatient['email'] ?>" />
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="password">Password :</label></td>
-                    <td>
-                        <input type="password" id="password" name="password" value="<?php echo $oldPatient['password'] ?>" />
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="telephone">Telephone :</label></td>
-                    <td>
-                        <input type="text" id="telephone" name="telephone" value="<?php echo $oldPatient['telephone'] ?>" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="submit" value="Save">
-                    </td>
-                    
-                </tr>
-            </table>
-        </form>
-    <?php
+            /* For modern browsers */
+            background-color: rgba(255, 255, 255, 0.5);
+            /* For older browsers */
+            filter: alpha(opacity=50);
+            /* Set your background image and size */
+        background-image: url('docteur1.jpg');
+        background-size: cover;
+        background-position: center;
+        /* For modern browsers */
+        background-color: rgba(255, 255, 255, 0.5);
+        /* For older browsers */
+        filter: alpha(opacity=50);
     }
-    ?>
+
+</style>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Update Patient</h3>
+                    </div>
+                    <div class="card-body">
+                        <form action="" method="POST">
+                            <input type="hidden" name="id_patient" value="<?php echo $_GET['id_patient']; ?>">
+                            <div class="text-center mt-3">
+                                <a href="liste_patient.php" class="btn btn-secondary">Back to list</a>
+                            </div>
+                            <div class="form-group">
+                                <label for="nom">Nom:</label>
+                                <input type="text" class="form-control" id="nom" name="nom" value="<?php echo isset($_POST['nom']) ? $_POST['nom'] : $oldPatient['nom']; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="prenom">Codele:</label>
+                                <input type="text" class="form-control" id="prenom" name="prenom" value="<?php echo isset($_POST['prenom']) ? $_POST['prenom'] : $oldPatient['prenom']; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="telephone">Telephone:</label>
+                                <input type="tel" class="form-control" id="telephone" name="telephone" value="<?php echo isset($_POST['telephone']) ? $_POST['telephone'] : $oldPatient['telephone']; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="text" class="form-control" id="email" name="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : $oldPatient['email']; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="genre">genre:</label>
+                                <input type="text" class="form-control" id="genre" name="genre" value="<?php echo isset($_POST['genre']) ? $_POST['genre'] : $oldPatient['genre']; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="heure_rdv">Heure_rdv:</label>
+                                <input type="time" class="form-control" id="heure_rdv" name="heure_rdv" value="<?php echo isset($_POST['heure_rdv']) ? $_POST['heure_rdv'] : $oldPatient['heure_rdv']; ?>">
+                            </div>
+                            <button type="submit" class="btn btn-primary" name="submit">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Add links to Bootstrap JavaScript files (if needed) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="patient.js"></script>
 </body>
 
 </html>

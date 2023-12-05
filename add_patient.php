@@ -35,7 +35,7 @@ if (
             $_POST["genre"],
             $_POST["heure_rdv"]
         );
-        /*print_r($patient);
+            /*print_r($patient);
         return;*/
         $patientC->addPatient($patient);
         header('Location: liste_patient.php');

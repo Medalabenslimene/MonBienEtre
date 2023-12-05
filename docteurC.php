@@ -105,4 +105,39 @@ class docteurC
         }
     }
 }
+/*public function listDoctorsLastNameZA()
+{
+$sal = "SELECT * FROM docteur ORDER BY nom DESC";
+$db = config: : getConnexion () ;
+try {
+$list = $db-›query ($sq1);
+return $list;
+} catch (Exception $e) {
+die('Error:' $e-›getMessage());
+}
+}
+function search ($recherche){
+    $sql = "SELECT * FROM docteur
+    WHERE nom LIKE :recherche
+    OR telephone telephone LIKE :recherchee
+    OR specialite LIKE :rechercheee"
+    $db = config: : getConnexion () ;
+    try {
+    $query = $db-›prepare($sql); $query-›bindValue(":recherche'
+    3
+    "%' " $recherche '%');
+    $query-›bindValue(': recherchee'. *%'
+    •$recherche
+    *%');
+    $query-›bindValue(":rechercheee'
+    '%' . $recherche
+    '%');
+    Squery-›execute() ;
+    $events = $query-›fetchAl1 () ;
+    return $events;
+    } catch (Exception $e)
+    die('Error:
+    •$e-›getMessage () );
+    } 
+    */
 ?>

@@ -34,10 +34,10 @@ $tab = $c->listReclamations();
             <td><?= $reclamation['type']; ?></td>
             <td><?= $reclamation['commentaire']; ?></td>
             <td>
-                <a href="update_reclamation.php?id_reclamation=<?php echo $reclamation['id_reclamation']; ?>">Update</a>
+            <a href="update_reclamation.php?id_reclamation=<?php echo $reclamation['id_reclamation']; ?>">Update</a>
             </td>
             <td align="center">
-                <form method="POST" action="updateReclamation.php">
+                <form method="POST" action="updateReclamation.php" action="blank.php">
                     <input type="submit" name="update" value="Update">
                     <input type="hidden" value=<?PHP echo $reclamation['id_reclamation']; ?> name="id_reclamation">
                 </form>
